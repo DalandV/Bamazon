@@ -22,7 +22,7 @@ function availableItems() {
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
 
-    console.log("\n" + "Here are all of our available products:" + "\n")
+    console.log("\nHere are all of our available products:\n")
 
     res.forEach(function (element) {
       console.log(
@@ -43,12 +43,24 @@ function userPrompts() {
         {
           name: "id_input",
           type: "input",
-          message: "Please enter the ID number of the product you would like to purchase"
+          message: "Please enter the ID number of the product you would like to purchase",
+          validate: function (value) {
+            if (value <= res.length && value > 0 && isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
         },
         {
           name: "units_input",
           type: "input",
-          message: "How many units of the product would you like to buy"
+          message: "How many units of the product would you like to buy",
+          validate: function (value) {
+            if (value > 0 && isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
         }
       ]).then(function (answer) {
         var productID = answer.id_input
@@ -92,5 +104,5 @@ function userPrompts() {
 };
 
 function round(value, decimals) {
-  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 };
